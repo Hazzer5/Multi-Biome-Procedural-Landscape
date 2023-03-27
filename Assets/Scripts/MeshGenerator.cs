@@ -20,7 +20,7 @@ public static class MeshGenerator
         int[,] vertexIndicesMap = new int[borderedSize, borderedSize];
         int meshVertexIndex = 0;
         int borderVertexIndex = -1;
-
+        Debug.Log(borderedSize);
         for (int y = 0; y < borderedSize; y++)
         {
             for (int x = 0; x < borderedSize; x++)
@@ -41,9 +41,9 @@ public static class MeshGenerator
             for (int x = 0; x < borderedSize; x++)
             {
                 int vertexIndex = vertexIndicesMap[x,y];
-                Vector2 percent = new Vector2(x / meshSize, y / meshSize);
+                Vector2 percent = new Vector2(x-1.0f / meshSize, y-1.0f / meshSize);
                 float height = heightMap.values[x,y];
-                Vector3 vertexPosition = new Vector3(topLeftX + percent.x * meshSize, height, topLeftZ - percent.y * meshSize) * meshSettings.meshScale;
+                Vector3 vertexPosition = new Vector3(topLeftX + percent.x * meshSize, height * meshSettings.heightMultiplier, topLeftZ - percent.y * meshSize) * meshSettings.meshScale;
 
                 meshData.AddVertex(vertexPosition, percent, vertexIndex);
                 if (x < borderedSize - 1 && y < borderedSize - 1) {

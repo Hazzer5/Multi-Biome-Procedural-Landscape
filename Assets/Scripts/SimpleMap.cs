@@ -23,9 +23,7 @@ public class SimpleMap : MonoBehaviour
                 colourMap[y*width+x] = Color.Lerp(Color.black, Color.white, heightMap.values[x,y]);
             }
         }
-
-        Debug.Log(heightMap.values);
-
+        
         text.filterMode = FilterMode.Point;
         text.wrapMode = TextureWrapMode.Clamp;
         text.SetPixels(colourMap);
