@@ -14,7 +14,7 @@ public class SimpleMap : MonoBehaviour
         Texture2D text = new Texture2D(width, height);
         Color[] colourMap = new Color[width * height];
 
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(width, height, heightMapSettings);
+        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(width, height, heightMapSettings, new Vector2(0,0));
 
         for (int x = 0; x < width; x++)
         {
@@ -31,7 +31,7 @@ public class SimpleMap : MonoBehaviour
 
         Renderer textureRender = GetComponent<Renderer>();
         textureRender.sharedMaterial.mainTexture = text;
-        transform.localScale = new Vector3(width, 1, height);
+        transform.localScale = new Vector3(width * 5f, 1, height * 5f);
     }
 
     // Update is called once per frame

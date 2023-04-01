@@ -11,7 +11,7 @@ public class SimpleMesh : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.mapChunkSize, meshSettings.mapChunkSize, heightMapSettings);
+        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.mapChunkSize, meshSettings.mapChunkSize, heightMapSettings, new Vector2(0, 0));
 
         MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap, meshSettings, 0);
 

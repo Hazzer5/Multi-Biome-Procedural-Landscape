@@ -12,16 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e1ad79a07f28e408c56a678e5bf890, type: 3}
   m_Name: Defult HeightMap Settings
   m_EditorClassIdentifier: 
-  octaves: 5
-  scale: 50
+  octaves: 2
+  scale: 100
   persistance: 0.42
   lacunarity: 2
   seed: 500
   fixedOffset: {x: 250, y: 250}
   offsets:
-  - {x: 88030, y: 5576}
-  - {x: -47347, y: -43825}
-  - {x: 90030, y: 1807}
-  - {x: 87125, y: -42875}
-  - {x: 67429, y: 30100}
-  maxHeight: 1.7016048
+  - {x: 88030, y: 5076}
+  - {x: -47347, y: -44325}
+  maxHeight: 1.42

@@ -20,7 +20,7 @@ public static class MeshGenerator
         int[,] vertexIndicesMap = new int[borderedSize, borderedSize];
         int meshVertexIndex = 0;
         int borderVertexIndex = -1;
-        Debug.Log(borderedSize);
+        
         for (int y = 0; y < borderedSize; y++)
         {
             for (int x = 0; x < borderedSize; x++)
@@ -45,7 +45,7 @@ public static class MeshGenerator
                 float height = heightMap.values[x,y];
                 Vector3 vertexPosition = new Vector3(topLeftX + percent.x * meshSize, height * meshSettings.heightMultiplier, topLeftZ - percent.y * meshSize) * meshSettings.meshScale;
 
-                meshData.AddVertex(vertexPosition, percent, vertexIndex);
+                meshData.AddVertex(vertexPosition, percent, vertexIndex, height);
                 if (x < borderedSize - 1 && y < borderedSize - 1) {
                     int a = vertexIndicesMap[x,    y];
                     int b = vertexIndicesMap[x + 1,y];
@@ -63,6 +63,7 @@ public static class MeshGenerator
 
 public class MeshData {
     Vector3[] vertices;
+    Color[] colours;
     int[] triangles;
     Vector2[] uvs;
     Vector3[] bakedNormals;
@@ -77,16 +78,18 @@ public class MeshData {
         int totalVertices = verticesPerLine * verticesPerLine;
         vertices = new Vector3[totalVertices];
         uvs = new Vector2[totalVertices];
+        colours = new Color[totalVertices];
         triangles = new int[(verticesPerLine - 1) * (verticesPerLine - 1) * 6];
 
         borderVertices = new Vector3[verticesPerLine * 4 + 4];
         borderTriangles = new int[24 * verticesPerLine];
     }
-    public void AddVertex(Vector3 vertexPosition, Vector2 uv, int vertexIndex){
+    public void AddVertex(Vector3 vertexPosition, Vector2 uv, int vertexIndex, float colourValue){
         if(vertexIndex < 0) {
             borderVertices [-vertexIndex - 1] = vertexPosition;
         } else {
             vertices[vertexIndex] = vertexPosition;
+            colours[vertexIndex] = new Color(colourValue, colourValue, colourValue);
             uvs[vertexIndex] = uv;
         }
     }
@@ -149,6 +152,7 @@ public class MeshData {
         mesh.triangles = triangles;
         mesh.uv = uvs;
         mesh.normals = bakedNormals;
+        mesh.colors = colours;
         return mesh;
     }
 }

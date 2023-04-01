@@ -38,7 +38,7 @@ public class HeightMapSettings : ScriptableObject
         for (int i = 0; i < octaves; i++)
         {
             float offsetX = prng.Next (-100000, 100000) + fixedOffset.x;
-            float offsetY = prng.Next (-100000, 100000) + fixedOffset.y;
+            float offsetY = prng.Next (-100000, 100000) - fixedOffset.y;
             offsets[i] = new Vector2 (offsetX, offsetY);
             maxHeight += amplitude;
             amplitude *= persistance;

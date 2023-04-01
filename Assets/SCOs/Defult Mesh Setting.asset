@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24fc36c9c931725469353600b6598c26, type: 3}
   m_Name: Defult Mesh Setting
   m_EditorClassIdentifier: 
-  chunkSizeIndex: 6
-  meshScale: 2.5
+  chunkSizeIndex: 3
+  meshScale: 0.25
+  heightMultiplier: 10000

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class HeightMapGenerator
 {
-    public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings settings) {
+    public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings settings, Vector2 sampleCenter) {
           
         float[,] values = new float[width, height];
         float minValue = float.MaxValue;
@@ -17,7 +17,7 @@ public static class HeightMapGenerator
         {
             for (int y = 0; y < height; y++)
             {
-                values[x,y] = GenerateNoiseValue(x - halfWidth, y-halfHeight, settings);
+                values[x,y] = GenerateNoiseValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings);
                 if (minValue < values[x,y]) maxValue = values[x,y];
                 if (minValue > values[x,y]) minValue = values[x,y];
             }
