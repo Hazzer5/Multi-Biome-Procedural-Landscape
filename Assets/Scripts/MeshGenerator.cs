@@ -5,7 +5,7 @@ using UnityEngine;
 public static class MeshGenerator
 {
     public static MeshData GenerateTerrainMesh(HeightMap heightMap, MeshSettings meshSettings, int levelOfDetail) {
-        int meshSimplificationIncrement = (levelOfDetail == 0)?1:levelOfDetail*2;
+        //int meshSimplificationIncrement = (levelOfDetail == 0)?1:levelOfDetail*2;
 
         int borderedSize = heightMap.values.GetLength(0);
         int meshSize = borderedSize - 2;
@@ -13,9 +13,7 @@ public static class MeshGenerator
         float topLeftX = (meshSize - 1) / -2f;
         float topLeftZ = (meshSize - 1) / 2f;
 
-        int verticesPerLine = ((meshSize - 1) / meshSimplificationIncrement) + 1;
-
-        MeshData meshData = new MeshData(verticesPerLine);
+        MeshData meshData = new MeshData(meshSize);
 
         int[,] vertexIndicesMap = new int[borderedSize, borderedSize];
         int meshVertexIndex = 0;
@@ -41,9 +39,9 @@ public static class MeshGenerator
             for (int x = 0; x < borderedSize; x++)
             {
                 int vertexIndex = vertexIndicesMap[x,y];
-                Vector2 percent = new Vector2(x-1.0f / meshSize, y-1.0f / meshSize);
+                Vector2 percent = new Vector2((x-1.0f) / (float)meshSize, (y-1.0f) / (float)meshSize);
                 float height = heightMap.values[x,y];
-                Vector3 vertexPosition = new Vector3(topLeftX + percent.x * meshSize, height * meshSettings.heightMultiplier, topLeftZ - percent.y * meshSize) * meshSettings.meshScale;
+                Vector3 vertexPosition = new Vector3((topLeftX + percent.x * meshSize) * meshSettings.meshScale, height * meshSettings.heightMultiplier, (topLeftZ - percent.y * meshSize) * meshSettings.meshScale);
 
                 meshData.AddVertex(vertexPosition, percent, vertexIndex, height);
                 if (x < borderedSize - 1 && y < borderedSize - 1) {
