@@ -19,15 +19,15 @@ public class TerrainChunk
     bool mapDataRecived;
     bool meshDataRecived;
 
-    HeightMapSettings heightMapSettings;
+    BiomeNoiseSettings biomeNoiseSettings;
     MeshSettings meshSettings;
     float vieableDist;
 
     Transform viewer;
 
-    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, Transform parent, Material material, Transform viewer, float vieableDist) {
+    public TerrainChunk(Vector2 coord, BiomeNoiseSettings biomeNoiseSettings, MeshSettings meshSettings, Transform parent, Material material, Transform viewer, float vieableDist) {
         this.coord = coord;
-        this.heightMapSettings = heightMapSettings;
+        this.biomeNoiseSettings = biomeNoiseSettings;
         this.meshSettings = meshSettings;
         this.viewer = viewer;
         this.vieableDist = vieableDist;
@@ -46,7 +46,7 @@ public class TerrainChunk
     }
 
     public void Load() {
-        ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(meshSettings.mapChunkSize, meshSettings.mapChunkSize, heightMapSettings, sampleCenter), OnMapDataReceived);
+        ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateBiomeMap(meshSettings.mapChunkSize, meshSettings.mapChunkSize, biomeNoiseSettings, sampleCenter), OnMapDataReceived);
     }
 
     void OnMapDataReceived(object heightMapObject) {

@@ -6,7 +6,7 @@ public class ContinusTerrainGenerator : MonoBehaviour
 {
     [Header("World Settings")]
     public MeshSettings meshSettings;
-    public HeightMapSettings heightMapSettings;
+    public BiomeNoiseSettings biomeNoiseSettings;
     public Material material;
 
 
@@ -31,6 +31,7 @@ public class ContinusTerrainGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        biomeNoiseSettings.CreateTextureArray();
         meshWorldSize = meshSettings.meshWorldSize;
         chunkVisibleInViewDist = Mathf.RoundToInt(maxViewDist / meshWorldSize);
         UpdateVisibleChunks();
@@ -69,7 +70,7 @@ public class ContinusTerrainGenerator : MonoBehaviour
                             visibleChunks.Add(chunkDictonary[viewedChunkCoord]);
                         }
                     } else {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, transform, material, viewer, maxViewDist);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, biomeNoiseSettings, meshSettings, transform, material, viewer, maxViewDist);
                         chunkDictonary.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibiltyChange += OnChunkVissibiltyChange;
 
