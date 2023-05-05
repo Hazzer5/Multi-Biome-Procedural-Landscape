@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapPreview : MonoBehaviour
 {
-    public enum DrawMode {NoiseTexture, NoiseMesh, BiomeTexture}
+    public enum DrawMode {NoiseTexture, NoiseMesh, Biome1Texture, BiomeEdgeTexture, SecondBiomeEdgeTexture, Biome2Texture}
 
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
@@ -21,6 +21,8 @@ public class MapPreview : MonoBehaviour
 
 
     public void DrawInEditor() {
+        biomeNoiseSettings.CreateTextureArray();
+
         meshObj = mesh.gameObject;
         textureObj = textureRender.gameObject;
 
@@ -34,13 +36,16 @@ public class MapPreview : MonoBehaviour
             meshObj.SetActive(false);
             textureObj.SetActive(true);
             break;
-            case DrawMode.BiomeTexture:
-            ApplyTexture(biomeMap);
+            case DrawMode.Biome1Texture:
+            case DrawMode.Biome2Texture:
+            case DrawMode.BiomeEdgeTexture:
+            case DrawMode.SecondBiomeEdgeTexture:
+            ApplyBiomeTexture(biomeMap, mode);
             meshObj.SetActive(false);
             textureObj.SetActive(true);
             break;
             case DrawMode.NoiseMesh:
-            ApplyMesh(heightMap);
+            ApplyMesh(biomeMap);
             textureObj.SetActive(false);
             meshObj.SetActive(true);
             break;
@@ -59,6 +64,44 @@ public class MapPreview : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 colourMap[y*width+x] = Color.Lerp(Color.black, Color.white, heightMap.values[x,y]);
+            }
+        }
+        
+        text.filterMode = FilterMode.Point;
+        text.wrapMode = TextureWrapMode.Clamp;
+        text.SetPixels(colourMap);
+        text.Apply();
+
+        textureRender.sharedMaterial.mainTexture = text;
+        textureObj.transform.localScale = new Vector3(width * 5.0f, 1, height * 5.0f);
+    }
+    void ApplyBiomeTexture(DataMap heightMap, DrawMode type) {
+        int width = heightMap.values.GetLength(0);
+        int height = heightMap.values.GetLength(1);
+        Texture2D text = new Texture2D(width, height);
+        Color[] colourMap = new Color[width * height];
+         for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                float value = 0;
+                switch(type) {
+                    case DrawMode.Biome1Texture:
+                    value = heightMap.biomes[x,y,0] / (biomeNoiseSettings.numBiomes - 1.0f);
+                    break;
+                    case DrawMode.Biome2Texture:
+                    value = heightMap.biomes[x,y,1] / (biomeNoiseSettings.numBiomes - 1.0f);
+                    break;
+                    case DrawMode.BiomeEdgeTexture:
+                    value = heightMap.biomeEdges[x,y,0] / 10.0f;
+                    break;
+                    case DrawMode.SecondBiomeEdgeTexture:
+                    value = heightMap.biomeEdges[x,y,1] / 10.0f;
+                    break;
+                }
+
+
+                colourMap[y*width+x] = Color.Lerp(Color.black, Color.white, value);
             }
         }
         

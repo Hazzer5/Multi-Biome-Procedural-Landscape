@@ -44,6 +44,7 @@ public static class HeightMapGenerator
                 biomes[x,y,2] = result.cell3;
                 biomeEdges[x,y,0] = result.edge1;
                 biomeEdges[x,y,1] = result.edge2;
+                values[x,y] = NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings.biomes[0].heightMapSettings);
             }
         }
 

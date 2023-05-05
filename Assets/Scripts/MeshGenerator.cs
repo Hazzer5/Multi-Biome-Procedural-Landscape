@@ -43,7 +43,7 @@ public static class MeshGenerator
                 float height = heightMap.values[x,y];
                 Vector3 vertexPosition = new Vector3((topLeftX + percent.x * meshSize) * meshSettings.meshScale, height * meshSettings.heightMultiplier, (topLeftZ - percent.y * meshSize) * meshSettings.meshScale);
 
-                meshData.AddVertex(vertexPosition, percent, vertexIndex, height);
+                meshData.AddVertex(vertexPosition, percent, vertexIndex, heightMap.biomes[x,y,0]);
                 if (x < borderedSize - 1 && y < borderedSize - 1) {
                     int a = vertexIndicesMap[x,    y];
                     int b = vertexIndicesMap[x + 1,y];
