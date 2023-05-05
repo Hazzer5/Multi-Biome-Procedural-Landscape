@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class MeshGenerator
 {
-    public static MeshData GenerateTerrainMesh(HeightMap heightMap, MeshSettings meshSettings, int levelOfDetail) {
+    public static MeshData GenerateTerrainMesh(DataMap heightMap, MeshSettings meshSettings, int levelOfDetail) {
         //int meshSimplificationIncrement = (levelOfDetail == 0)?1:levelOfDetail*2;
 
         int borderedSize = heightMap.values.GetLength(0);

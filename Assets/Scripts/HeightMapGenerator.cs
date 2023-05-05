@@ -4,11 +4,11 @@ using UnityEngine;
 
 public static class HeightMapGenerator
 {
-    public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings settings, Vector2 sampleCenter) {
+    public static DataMap GenerateHeightMap(int width, int height, HeightMapSettings settings, Vector2 sampleCenter) {
           
         float[,] values = new float[width, height];
-        float minValue = float.MaxValue;
-        float maxValue = float.MinValue;
+        int[,,] biomes = new int[width, height, 3];
+        float[,,] biomeEdges = new float[width, height, 2];
 
         float halfWidth = width/2;
         float halfHeight = height/2;
@@ -17,42 +17,50 @@ public static class HeightMapGenerator
         {
             for (int y = 0; y < height; y++)
             {
-                values[x,y] = GenerateNoiseValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings);
-                if (minValue < values[x,y]) maxValue = values[x,y];
-                if (minValue > values[x,y]) minValue = values[x,y];
+                values[x,y] = NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings);
             }
         }
 
-        return new HeightMap(values, minValue, maxValue);
+        return new DataMap(values, biomes, biomeEdges);
     }
 
-    static float GenerateNoiseValue(float xCoord, float yCoord, HeightMapSettings settings) {
-        float amplitude = 1;
-        float frequncy = 1;
-        float value = 0;
-        for (int i = 0; i < settings.octaves; i++)
+    public static DataMap GenerateBiomeMap(int width, int height, BiomeNoiseSettings settings, Vector2 sampleCenter) {
+          
+        float[,] values = new float[width, height];
+        int[,,] biomes = new int[width, height, 3];
+        float[,,] biomeEdges = new float[width, height, 2];
+
+        float halfWidth = width/2;
+        float halfHeight = height/2;
+
+        for (int x = 0; x < width; x++)
         {
-            float sampleX = (xCoord + settings.offsets[i].x) / settings.scale * frequncy;
-            float sampleY = (yCoord + settings.offsets[i].y) / settings.scale * frequncy;
-            float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
-            value += perlinValue * amplitude;
-            amplitude *= settings.persistance;
-            frequncy *= settings.lacunarity;
+            for (int y = 0; y < height; y++)
+            {
+                VoroniResult result = NoiseGenerator.GenerateVoronoiValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings);
+                values[x,y] = result.cell1 / (float)settings.numBiomes;
+                biomes[x,y,0] = result.cell1;
+                biomes[x,y,1] = result.cell2;
+                biomes[x,y,2] = result.cell3;
+                biomeEdges[x,y,0] = result.edge1;
+                biomeEdges[x,y,1] = result.edge2;
+            }
         }
-        float normalizedHeight = (value + 1)/(settings.maxHeight/0.9f);
-        return Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
+
+        return new DataMap(values, biomes, biomeEdges);
     }
+
 }
 
-public struct HeightMap
+public struct DataMap
 {
     public readonly float[,] values;
-    public readonly float minValue;
-    public readonly float maxValue;
+    public readonly int[,,] biomes;
+    public readonly float[,,] biomeEdges;
 
-    public HeightMap(float[,] heightMap, float minValue, float maxValue){
+    public DataMap(float[,] heightMap, int[,,] biomes, float[,,] biomeEdges){
         this.values = heightMap;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        this.biomes = biomes;
+        this.biomeEdges = biomeEdges;
     }
 }

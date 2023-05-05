@@ -15,7 +15,7 @@ public class TerrainChunk
     MeshRenderer meshRenderer;
     MeshFilter meshFilter;
 
-    HeightMap heightMap;
+    DataMap heightMap;
     bool mapDataRecived;
     bool meshDataRecived;
 
@@ -50,7 +50,7 @@ public class TerrainChunk
     }
 
     void OnMapDataReceived(object heightMapObject) {
-        this.heightMap = (HeightMap)heightMapObject;
+        this.heightMap = (DataMap)heightMapObject;
         mapDataRecived = true;
 
         ThreadedDataRequester.RequestData(() => MeshGenerator.GenerateTerrainMesh(heightMap, meshSettings, 0), OnMeshDataReceived);

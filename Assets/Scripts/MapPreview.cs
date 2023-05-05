@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class MapPreview : MonoBehaviour
 {
-    public enum DrawMode {NoiseTexture, NoiseMesh}
+    public enum DrawMode {NoiseTexture, NoiseMesh, BiomeTexture}
 
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
+
+    public BiomeNoiseSettings biomeNoiseSettings;
 
     [Header("Editor Files")]
     public MeshFilter mesh;
@@ -22,8 +24,8 @@ public class MapPreview : MonoBehaviour
         meshObj = mesh.gameObject;
         textureObj = textureRender.gameObject;
 
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.mapChunkSize, meshSettings.mapChunkSize, heightMapSettings, new Vector2(0, 0));
-
+        DataMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.mapChunkSize, meshSettings.mapChunkSize, heightMapSettings, new Vector2(0, 0));
+        DataMap biomeMap = HeightMapGenerator.GenerateBiomeMap(meshSettings.mapChunkSize, meshSettings.mapChunkSize, biomeNoiseSettings, new Vector2(0, 0));
         
 
         switch (mode) {
@@ -32,16 +34,22 @@ public class MapPreview : MonoBehaviour
             meshObj.SetActive(false);
             textureObj.SetActive(true);
             break;
+            case DrawMode.BiomeTexture:
+            ApplyTexture(biomeMap);
+            meshObj.SetActive(false);
+            textureObj.SetActive(true);
+            break;
             case DrawMode.NoiseMesh:
             ApplyMesh(heightMap);
             textureObj.SetActive(false);
             meshObj.SetActive(true);
             break;
+            
         }
     }
 
 
-    void ApplyTexture(HeightMap heightMap) {
+    void ApplyTexture(DataMap heightMap) {
         int width = heightMap.values.GetLength(0);
         int height = heightMap.values.GetLength(1);
         Texture2D text = new Texture2D(width, height);
@@ -63,7 +71,9 @@ public class MapPreview : MonoBehaviour
         textureObj.transform.localScale = new Vector3(width * 5.0f, 1, height * 5.0f);
     }
 
-    void ApplyMesh(HeightMap heightMap) {
+
+
+    void ApplyMesh(DataMap heightMap) {
         MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap, meshSettings, 0);
         mesh.sharedMesh = meshData.CreateMesh();
     }

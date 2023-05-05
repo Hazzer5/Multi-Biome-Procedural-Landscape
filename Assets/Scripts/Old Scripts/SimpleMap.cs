@@ -14,7 +14,7 @@ public class SimpleMap : MonoBehaviour
         Texture2D text = new Texture2D(width, height);
         Color[] colourMap = new Color[width * height];
 
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(width, height, heightMapSettings, new Vector2(0,0));
+        DataMap heightMap = HeightMapGenerator.GenerateHeightMap(width, height, heightMapSettings, new Vector2(0,0));
 
         for (int x = 0; x < width; x++)
         {
