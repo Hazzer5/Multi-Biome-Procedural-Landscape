@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using System.Threading;
 using System;
 
@@ -8,9 +9,11 @@ public class ThreadedDataRequester : MonoBehaviour
 {
     static ThreadedDataRequester instance;
     Queue<ThreadInfo> DataThreadInfoQueue = new Queue<ThreadInfo>();
+    CustomSampler sampler;
 
     void Awake() {
         instance = FindObjectOfType<ThreadedDataRequester> ();
+        sampler = CustomSampler.Create("MyCustomSampler");
     }
 
     public static void RequestData(Func<object> dataGenerator, Action<object> callback) {

@@ -34,7 +34,30 @@ public class ContinusTerrainGenerator : MonoBehaviour
         biomeNoiseSettings.CreateTextureArray();
         meshWorldSize = meshSettings.meshWorldSize;
         chunkVisibleInViewDist = Mathf.RoundToInt(maxViewDist / meshWorldSize);
-        UpdateVisibleChunks();
+        int currentChunkCoordX = Mathf.RoundToInt(viewerPosition.x / meshWorldSize);
+        int currentChunkCoordY = Mathf.RoundToInt(viewerPosition.y / meshWorldSize);
+
+        for (int yOffset = 0; yOffset <= chunkVisibleInViewDist; yOffset++) {
+            for (int xOffset = 0; xOffset <= chunkVisibleInViewDist; xOffset++) {
+                Vector2 chunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
+
+                TerrainChunk newChunk = new TerrainChunk(chunkCoord, biomeNoiseSettings, meshSettings, transform, material, viewer, maxViewDist);
+                chunkDictonary.Add(chunkCoord, newChunk);
+                newChunk.onVisibiltyChange += OnChunkVissibiltyChange;
+
+                newChunk.Load();
+
+                if(yOffset==0 && xOffset==0) continue;
+
+                chunkCoord = new Vector2(currentChunkCoordX - xOffset, currentChunkCoordY - yOffset);
+
+                newChunk = new TerrainChunk(chunkCoord, biomeNoiseSettings, meshSettings, transform, material, viewer, maxViewDist);
+                chunkDictonary.Add(chunkCoord, newChunk);
+                newChunk.onVisibiltyChange += OnChunkVissibiltyChange;
+
+                newChunk.Load();
+            }
+        }
     }
 
     // Update is called once per frame

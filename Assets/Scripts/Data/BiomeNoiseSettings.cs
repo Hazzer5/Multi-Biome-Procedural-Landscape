@@ -20,19 +20,26 @@ public class BiomeNoiseSettings : ScriptableObject
     
     public void CreateTextureArray() {
         Texture2D sample = biomes[0].diffuse;
+        Texture2D normalSample = biomes[0].normal;
         
-        Texture2DArray textureArray = new Texture2DArray(sample.width, sample.height, numBiomes, sample.format, true, false);
-        textureArray.filterMode = FilterMode.Bilinear;
-        textureArray.wrapMode = TextureWrapMode.Repeat;
+        Texture2DArray diffuseArray = new Texture2DArray(sample.width, sample.height, numBiomes, sample.format, true, false);
+        Texture2DArray normalArray = new Texture2DArray(normalSample.width, normalSample.height, numBiomes, normalSample.format, true, true);
+        diffuseArray.filterMode = FilterMode.Bilinear;
+        diffuseArray.wrapMode = TextureWrapMode.Repeat;
+        normalArray.filterMode = FilterMode.Bilinear;
+        normalArray.wrapMode = TextureWrapMode.Repeat;
 
         for (int i = 0; i < numBiomes; i++)
         {
             Debug.Log(i);
-            Graphics.CopyTexture(biomes[i].diffuse, 0, textureArray, i);
+            Graphics.CopyTexture(biomes[i].diffuse, 0, diffuseArray, i);
+            Graphics.CopyTexture(biomes[i].normal, 0, normalArray, i);
         }
-        textureArray.Apply();
+        diffuseArray.Apply();
+        normalArray.Apply();
 
-        material.SetTexture("_Diffuses", textureArray);
+        material.SetTexture("_Diffuses", diffuseArray);
+        material.SetTexture("_Normals", normalArray);
     }
 
 

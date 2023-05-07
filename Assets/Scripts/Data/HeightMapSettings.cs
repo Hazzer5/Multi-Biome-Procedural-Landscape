@@ -22,6 +22,8 @@ public class HeightMapSettings : ScriptableObject
     [HideInInspector]
     public float maxHeight;
 
+    public AnimationCurve heightCurve;
+
     void OnValidate() {
         octaves = Mathf.Max(octaves, 1);
         if (scale <= 0) scale = 10.0f;
