@@ -17,11 +17,12 @@ public class TerrainChunk
 
     DataMap heightMap;
     bool mapDataRecived;
+    bool requestedMesh;
     bool meshDataRecived;
 
     BiomeNoiseSettings biomeNoiseSettings;
     MeshSettings meshSettings;
-    float vieableDist;
+    float viewableDist;
 
     Transform viewer;
 
@@ -30,7 +31,7 @@ public class TerrainChunk
         this.biomeNoiseSettings = biomeNoiseSettings;
         this.meshSettings = meshSettings;
         this.viewer = viewer;
-        this.vieableDist = vieableDist;
+        this.viewableDist = vieableDist;
 
         Vector2 position = coord * meshSettings.meshWorldSize;
         bounds = new Bounds(position, Vector2.one * meshSettings.meshWorldSize);
@@ -53,7 +54,18 @@ public class TerrainChunk
         this.heightMap = (DataMap)heightMapObject;
         mapDataRecived = true;
 
+        float viewerDist = Mathf.Sqrt(bounds.SqrDistance(viewerPosition));
+        if (viewerDist <= viewableDist)
+        {
+            RequestMesh();
+        }
+    }
+
+    void RequestMesh() {
+        if(requestedMesh) return;
+        requestedMesh = true;
         ThreadedDataRequester.RequestData(() => MeshGenerator.GenerateTerrainMesh(heightMap, meshSettings, 0), OnMeshDataReceived);
+
     }
 
     void OnMeshDataReceived(object meshDataObject) {
@@ -72,12 +84,16 @@ public class TerrainChunk
 
 
     public void UpdateChunk() {
-        if(!meshDataRecived) return;
+        if(!mapDataRecived) return;
+        if(!meshDataRecived) {
+            RequestMesh();
+            return;
+        }
         
         float viewerDist = Mathf.Sqrt(bounds.SqrDistance(viewerPosition));
 
         bool wasVisible = IsVisible();
-        bool visible = viewerDist <= vieableDist;
+        bool visible = viewerDist <= viewableDist;
 
         if (wasVisible != visible) {
             SetVisible(visible);

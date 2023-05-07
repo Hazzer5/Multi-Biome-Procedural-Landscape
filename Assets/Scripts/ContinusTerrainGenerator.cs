@@ -13,6 +13,7 @@ public class ContinusTerrainGenerator : MonoBehaviour
     [Header("Viewer Settings")]
     public Transform viewer;
     public float maxViewDist;
+    public float maxDataDist;
     const float viewerMoveForChunkUpdate = 25f;
     const float sqrViewerMoveForChunkUpdate = viewerMoveForChunkUpdate * viewerMoveForChunkUpdate;
 
@@ -22,6 +23,7 @@ public class ContinusTerrainGenerator : MonoBehaviour
 
     float meshWorldSize;
     int chunkVisibleInViewDist;
+    int chunksInDataRange;
 
     Dictionary<Vector2, TerrainChunk> chunkDictonary = new Dictionary<Vector2, TerrainChunk>();
     List<TerrainChunk> visibleChunks = new List<TerrainChunk>();
@@ -31,9 +33,10 @@ public class ContinusTerrainGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        biomeNoiseSettings.CreateTextureArray();
+        biomeNoiseSettings.Initialize();
         meshWorldSize = meshSettings.meshWorldSize;
         chunkVisibleInViewDist = Mathf.RoundToInt(maxViewDist / meshWorldSize);
+        chunksInDataRange = Mathf.RoundToInt(maxDataDist / meshWorldSize);
         int currentChunkCoordX = Mathf.RoundToInt(viewerPosition.x / meshWorldSize);
         int currentChunkCoordY = Mathf.RoundToInt(viewerPosition.y / meshWorldSize);
 
@@ -100,6 +103,19 @@ public class ContinusTerrainGenerator : MonoBehaviour
                         newChunk.Load();
                     }
                 }
+            }
+        }
+
+        for (int yOffset = -chunksInDataRange; yOffset <= chunksInDataRange; yOffset++) {
+            for (int xOffset = -chunksInDataRange; xOffset <= chunksInDataRange; xOffset++) {
+                Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
+                if(chunkDictonary.ContainsKey(viewedChunkCoord)) continue;
+
+                TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, biomeNoiseSettings, meshSettings, transform, material, viewer, maxViewDist);
+                chunkDictonary.Add(viewedChunkCoord, newChunk);
+                newChunk.onVisibiltyChange += OnChunkVissibiltyChange;
+
+                newChunk.Load();
             }
         }
     }

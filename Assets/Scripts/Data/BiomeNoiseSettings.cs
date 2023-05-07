@@ -8,6 +8,8 @@ public class BiomeNoiseSettings : ScriptableObject
     public float cellSize;
     public int seed;
 
+    public float biomeBlendDist;
+
     public BiomeData[] biomes;
     public Material material;
 
@@ -18,7 +20,7 @@ public class BiomeNoiseSettings : ScriptableObject
         }
     }
     
-    public void CreateTextureArray() {
+    public void Initialize() {
         Texture2D sample = biomes[0].diffuse;
         Texture2D normalSample = biomes[0].normal;
         
@@ -31,7 +33,7 @@ public class BiomeNoiseSettings : ScriptableObject
 
         for (int i = 0; i < numBiomes; i++)
         {
-            Debug.Log(i);
+
             Graphics.CopyTexture(biomes[i].diffuse, 0, diffuseArray, i);
             Graphics.CopyTexture(biomes[i].normal, 0, normalArray, i);
         }
@@ -40,6 +42,11 @@ public class BiomeNoiseSettings : ScriptableObject
 
         material.SetTexture("_Diffuses", diffuseArray);
         material.SetTexture("_Normals", normalArray);
+
+        for (int i = 0; i < numBiomes; i++)
+        {
+            biomes[i].heightMapSettings.seed = seed;
+        }
     }
 
 

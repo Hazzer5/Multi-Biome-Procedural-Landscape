@@ -33,7 +33,7 @@ public class NoiseGenerator
 
         Vector2 bestCell = new Vector2(baseCellX, baseCellY);
         Vector2 toClosestCell = new Vector2(0,0);
-        int cell = 0;
+        Vector2 cell1 = new Vector2(0,0);
 
         for(int cellX=baseCellX-1; cellX <= baseCellX+1; cellX++) {
             for(int cellY=baseCellY-1; cellY <= baseCellY+1; cellY++) {
@@ -44,20 +44,19 @@ public class NoiseGenerator
                     minDist = dist;
                     bestCell.x = cellX;
                     bestCell.y = cellY;
-                    
+                    cell1 = cellRandPos;
                     toClosestCell = cellRandPos - position;
-                    cell = rand.Next(settings.numBiomes);
                 } 
             }
         }
 
         VoroniResult result = new VoroniResult();
-        result.cell1 = cell;
+        result.cell1 = new System.Random(cell1.GetHashCode() ^ settings.seed).Next(settings.numBiomes);
 
         float minEdgeDistance = 10.0f;
-        int cell2 = 0;
+        Vector2 cell2 = new Vector2(0,0);
         float secondMinEdgeDistance = 10.0f;
-        int cell3 = 0;        
+        Vector2 cell3 = new Vector2(0,0);
 
         for(int cellX=baseCellX-1; cellX <= baseCellX+1; cellX++) {
             for(int cellY=baseCellY-1; cellY <= baseCellY+1; cellY++) {
@@ -75,16 +74,16 @@ public class NoiseGenerator
                     cell3 = cell2;
 
                     minEdgeDistance = edgeDist;
-                    cell2 = rand.Next(settings.numBiomes);
+                    cell2 = cellRandPos;
                 } else if(edgeDist < secondMinEdgeDistance) {
                     secondMinEdgeDistance = edgeDist;
-                    cell3 = rand.Next(settings.numBiomes);
+                    cell3 = cellRandPos;
                 }
             }
         }
         
-        result.cell2 = cell2;
-        result.cell3 = cell3;
+        result.cell2 = new System.Random(cell2.GetHashCode() ^ settings.seed).Next(settings.numBiomes);;
+        result.cell3 = new System.Random(cell3.GetHashCode() ^ settings.seed).Next(settings.numBiomes);;
         result.edge1 = minEdgeDistance * settings.cellSize;
         result.edge2 = secondMinEdgeDistance * settings.cellSize;
 

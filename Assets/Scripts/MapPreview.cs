@@ -21,7 +21,7 @@ public class MapPreview : MonoBehaviour
 
 
     public void DrawInEditor() {
-        biomeNoiseSettings.CreateTextureArray();
+        biomeNoiseSettings.Initialize();
 
         meshObj = mesh.gameObject;
         textureObj = textureRender.gameObject;
@@ -93,10 +93,10 @@ public class MapPreview : MonoBehaviour
                     value = heightMap.biomes[x,y,1] / (biomeNoiseSettings.numBiomes - 1.0f);
                     break;
                     case DrawMode.BiomeEdgeTexture:
-                    value = heightMap.biomeEdges[x,y,0] / 10.0f;
+                    value = 1 - heightMap.biomeWeights[x,y,0];
                     break;
                     case DrawMode.SecondBiomeEdgeTexture:
-                    value = heightMap.biomeEdges[x,y,1] / 10.0f;
+                    value = 1 - heightMap.biomeWeights[x,y,1];
                     break;
                 }
 

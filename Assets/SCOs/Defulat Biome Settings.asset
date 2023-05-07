@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d22522ffbcfef429bf3040a28e49b6, type: 3}
   m_Name: Defulat Biome Settings
   m_EditorClassIdentifier: 
-  cellSize: 40
+  cellSize: 200
   seed: 0
   biomes:
-  - heightMapSettings: {fileID: 11400000, guid: c03c39dfb54f36649af0177a5bc62cf7, type: 2}
+  - heightMapSettings: {fileID: 11400000, guid: bb8f757c537dfd1448f13c5add38177d, type: 2}
     diffuse: {fileID: 2800000, guid: 8c60c94065e8f814b905b9029244c324, type: 3}
     normal: {fileID: 2800000, guid: 710f1476a18acca48adf59ec4bc9f4f8, type: 3}
   - heightMapSettings: {fileID: 11400000, guid: c03c39dfb54f36649af0177a5bc62cf7, type: 2}

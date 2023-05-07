@@ -18,5 +18,32 @@ MonoBehaviour:
   lacunarity: 2
   seed: 0
   fixedOffset: {x: 0, y: 0}
-  offsets: []
-  maxHeight: 0
+  offsets:
+  - {x: 45248, y: 63465}
+  - {x: 53604, y: 11632}
+  - {x: -58794, y: 11776}
+  maxHeight: 1.75
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
