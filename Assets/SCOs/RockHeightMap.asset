@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64e1ad79a07f28e408c56a678e5bf890, type: 3}
+  m_Name: RockHeightMap
+  m_EditorClassIdentifier: 
+  octaves: 3
+  scale: 150
+  persistance: 0.25
+  lacunarity: 2
+  seed: 0
+  fixedOffset: {x: 250, y: 250}
+  offsets:
+  - {x: 45498, y: 63215}
+  - {x: 53854, y: 11382}
+  - {x: -58544, y: 11526}
+  maxHeight: 1.3125
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.80919755
+      outSlope: 0.80919755
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1240619
+    - serializedVersion: 3
+      time: 1.1466684
+      value: 1.200869
+      inSlope: 3.4677172
+      outSlope: 3.4677172
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.021238847
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

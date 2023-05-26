@@ -24,7 +24,7 @@ public class HeightMapSettings : ScriptableObject
 
     public AnimationCurve heightCurve;
 
-    void OnValidate() {
+    public void Initialize() {
         octaves = Mathf.Max(octaves, 1);
         if (scale <= 0) scale = 10.0f;
 

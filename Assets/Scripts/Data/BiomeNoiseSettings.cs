@@ -46,6 +46,7 @@ public class BiomeNoiseSettings : ScriptableObject
         for (int i = 0; i < numBiomes; i++)
         {
             biomes[i].heightMapSettings.seed = seed;
+            biomes[i].heightMapSettings.Initialize();
         }
     }
 

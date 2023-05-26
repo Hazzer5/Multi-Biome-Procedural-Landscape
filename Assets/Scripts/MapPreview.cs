@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapPreview : MonoBehaviour
 {
-    public enum DrawMode {NoiseTexture, NoiseMesh, Biome1Texture, BiomeEdgeTexture, SecondBiomeEdgeTexture, Biome2Texture}
+    public enum DrawMode {NoiseTexture, NoiseMesh, Biome1Texture, Biome2Texture, BiomeEdgeTexture, SecondBiomeEdgeTexture, MainBiomeWeight}
 
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
@@ -40,6 +40,7 @@ public class MapPreview : MonoBehaviour
             case DrawMode.Biome2Texture:
             case DrawMode.BiomeEdgeTexture:
             case DrawMode.SecondBiomeEdgeTexture:
+            case DrawMode.MainBiomeWeight:
             ApplyBiomeTexture(biomeMap, mode);
             meshObj.SetActive(false);
             textureObj.SetActive(true);
@@ -73,7 +74,7 @@ public class MapPreview : MonoBehaviour
         text.Apply();
 
         textureRender.sharedMaterial.mainTexture = text;
-        textureObj.transform.localScale = new Vector3(width * 5.0f, 1, height * 5.0f);
+        textureObj.transform.localScale = new Vector3(width * -0.1f, 1, height * -0.1f);
     }
     void ApplyBiomeTexture(DataMap heightMap, DrawMode type) {
         int width = heightMap.values.GetLength(0);
@@ -93,10 +94,13 @@ public class MapPreview : MonoBehaviour
                     value = heightMap.biomes[x,y,1] / (biomeNoiseSettings.numBiomes - 1.0f);
                     break;
                     case DrawMode.BiomeEdgeTexture:
-                    value = 1 - heightMap.biomeWeights[x,y,0];
+                    value = heightMap.biomeWeights[x,y,0];
                     break;
                     case DrawMode.SecondBiomeEdgeTexture:
-                    value = 1 - heightMap.biomeWeights[x,y,1];
+                    value = (heightMap.biomeWeights[x,y,1]);
+                    break;
+                    case DrawMode.MainBiomeWeight:
+                    value = 1 - heightMap.biomeWeights[x,y,0] - heightMap.biomeWeights[x,y,1];
                     break;
                 }
 
@@ -111,7 +115,7 @@ public class MapPreview : MonoBehaviour
         text.Apply();
 
         textureRender.sharedMaterial.mainTexture = text;
-        textureObj.transform.localScale = new Vector3(width * 5.0f, 1, height * 5.0f);
+        textureObj.transform.localScale = new Vector3(width * -0.1f, 1, height * 0.1f);
     }
 
 

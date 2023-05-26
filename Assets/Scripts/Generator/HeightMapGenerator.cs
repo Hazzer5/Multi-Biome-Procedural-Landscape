@@ -52,21 +52,24 @@ public static class HeightMapGenerator
                 biomes[x,y,0] = result.cell1;
                 biomes[x,y,1] = result.cell2;
                 biomes[x,y,2] = result.cell3;
-                biomeWeights[x,y,0] = Mathf.Max(1 - (result.edge1 / settings.biomeBlendDist), 0.0f);
-                biomeWeights[x,y,1] = Mathf.Max(1 - (result.edge2 / settings.biomeBlendDist), 0.0f);
+                //biomeWeights[x,y,0] = Mathf.Max((result.edge1 / settings.biomeBlendDist), 0.0f);
+                //biomeWeights[x,y,1] = Mathf.Max(1 - (result.edge2 / settings.biomeBlendDist), 0.0f);
+                biomeWeights[x,y,0] = result.edge1;
+                biomeWeights[x,y,1] = result.edge2;
 
-
-                float totalWeight = 1 + biomeWeights[x,y,0] + biomeWeights[x,y,1];
+                float mainWeight = 1 - biomeWeights[x,y,0] - biomeWeights[x,y,1];
                 values[x,y] = 0;
-                values[x,y] += heightCurves[result.cell1].Evaluate(NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings.biomes[result.cell1].heightMapSettings)) / totalWeight;
-                if(biomeWeights[x,y,0] != 0.0f) {
-                    values[x,y] += heightCurves[result.cell2].Evaluate(NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings.biomes[result.cell2].heightMapSettings)) *  biomeWeights[x,y,0] / totalWeight;
+                values[x,y] += heightCurves[result.cell1].Evaluate(NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings.biomes[result.cell1].heightMapSettings)) * mainWeight;
+                if(biomeWeights[x,y,0] > 0.0f) {
+                    values[x,y] += heightCurves[result.cell2].Evaluate(NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings.biomes[result.cell2].heightMapSettings)) *  biomeWeights[x,y,0];
                 }
-                if(biomeWeights[x,y,1] != 0.0f) {
-                    values[x,y] += heightCurves[result.cell3].Evaluate(NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings.biomes[result.cell3].heightMapSettings)) *  biomeWeights[x,y,1] / totalWeight;
+                if(biomeWeights[x,y,1] > 0.0f) {
+                    values[x,y] += heightCurves[result.cell3].Evaluate(NoiseGenerator.GeneratePerlinValue(x - halfWidth + sampleCenter.x, y-halfHeight - sampleCenter.y, settings.biomes[result.cell3].heightMapSettings)) *  biomeWeights[x,y,1];
                 }
             }
         }
+
+        //Debug.Log(biomeWeights[0,0,1]);
 
         return new DataMap(values, biomes, biomeWeights);
     }

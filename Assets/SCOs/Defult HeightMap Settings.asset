@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Defult HeightMap Settings
   m_EditorClassIdentifier: 
   octaves: 2
-  scale: 100
+  scale: 97.11
   persistance: 0.42
   lacunarity: 2
-  seed: 500
+  seed: 0
   fixedOffset: {x: 250, y: 250}
   offsets:
-  - {x: 88030, y: 5076}
-  - {x: -47347, y: -44325}
+  - {x: 45498, y: 63215}
+  - {x: 53854, y: 11382}
   maxHeight: 1.42
   heightCurve:
     serializedVersion: 2
