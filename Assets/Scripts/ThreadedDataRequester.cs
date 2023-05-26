@@ -18,17 +18,21 @@ public class ThreadedDataRequester : MonoBehaviour
 
     public static void RequestData(Func<object> dataGenerator, Action<object> callback) {
         ThreadStart threadStart = delegate {
+            Profiler.BeginThreadProfiling("My threads", "Data Thread");
             instance.DataThread (dataGenerator, callback);
+            Profiler.EndThreadProfiling();
         };
 
         new Thread (threadStart).Start ();
     }
 
     void DataThread(Func<object> dataGenerator, Action<object> callback) {
+        sampler.Begin();
         object data = dataGenerator();
         lock (DataThreadInfoQueue) {
             DataThreadInfoQueue.Enqueue(new ThreadInfo (callback, data));
         }
+        sampler.End();
     }
 
 

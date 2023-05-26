@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d22522ffbcfef429bf3040a28e49b6, type: 3}
+  m_Name: Editor Biome Settings
+  m_EditorClassIdentifier: 
+  cellSize: 600
+  seed: 0
+  biomeBlendDist: 60
+  biomes:
+  - heightMapSettings: {fileID: 11400000, guid: bb8f757c537dfd1448f13c5add38177d, type: 2}
+    diffuse: {fileID: 2800000, guid: 8c60c94065e8f814b905b9029244c324, type: 3}
+    normal: {fileID: 2800000, guid: 710f1476a18acca48adf59ec4bc9f4f8, type: 3}
+  - heightMapSettings: {fileID: 11400000, guid: f104ba9d04a1bf240816156e60b11446, type: 2}
+    diffuse: {fileID: 2800000, guid: e92918096a6417249b0b6ce4c80bfa80, type: 3}
+    normal: {fileID: 2800000, guid: 03cd2dfc9e0066442b072a897b09e1e6, type: 3}
+  - heightMapSettings: {fileID: 11400000, guid: 7a3696efc8ca9ab4bbc7f9c6b6e0f4f6, type: 2}
+    diffuse: {fileID: 2800000, guid: 6994c13bc4cfe384cacfcd10b3a929fe, type: 3}
+    normal: {fileID: 2800000, guid: ad69038670ae7b64f8d26f4730b90c61, type: 3}
+  material: {fileID: 2100000, guid: ce4cc13a3a32b334aa1226fdd0ab17db, type: 2}

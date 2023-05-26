@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapPreview : MonoBehaviour
 {
-    public enum DrawMode {NoiseTexture, NoiseMesh, Biome1Texture, Biome2Texture, BiomeEdgeTexture, SecondBiomeEdgeTexture, MainBiomeWeight}
+    public enum DrawMode {NoiseTexture, NoiseMesh, Biome1Texture, Biome2Texture, Biome3Texture, BiomeEdgeTexture, SecondBiomeEdgeTexture, MainBiomeWeight}
 
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
@@ -38,6 +38,7 @@ public class MapPreview : MonoBehaviour
             break;
             case DrawMode.Biome1Texture:
             case DrawMode.Biome2Texture:
+            case DrawMode.Biome3Texture:
             case DrawMode.BiomeEdgeTexture:
             case DrawMode.SecondBiomeEdgeTexture:
             case DrawMode.MainBiomeWeight:
@@ -92,6 +93,9 @@ public class MapPreview : MonoBehaviour
                     break;
                     case DrawMode.Biome2Texture:
                     value = heightMap.biomes[x,y,1] / (biomeNoiseSettings.numBiomes - 1.0f);
+                    break;
+                    case DrawMode.Biome3Texture:
+                    value = heightMap.biomes[x,y,2] / (biomeNoiseSettings.numBiomes - 1.0f);
                     break;
                     case DrawMode.BiomeEdgeTexture:
                     value = heightMap.biomeWeights[x,y,0];
